@@ -4,24 +4,27 @@ import time
 
 def find_oil_data():
     URL= 'https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-estatisticos'
+    OIL_DATA_LOCATION = "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-estatisticos/de/ppgn/pp/"
+    
     html_text = requests.get(URL).text
 
     soup = BeautifulSoup(html_text, "lxml")
     general_content= soup.find_all('a')
 
-    oil_content_links = []
+    oil_content_links = ['']
     for content in general_content:
         link = content['href']
-        if link.startswith("https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-estatisticos/de/ppgn/pp/"):
+        if link.startswith(OIL_DATA_LOCATION):
             oil_content_links.append(link)
     
-    with open(f'oil_data/oil_data.txt', 'w') as f:
-        for link in oil_content_links:
-            if link == oil_content_links[-1]:
-                f.write(f'{link}')
-            else:
-                f.write(f'{link}\n')
-    print ('File created')
+    for link in oil_content_links:
+        file_name = link
+        if OIL_DATA_LOCATION in file_name:
+            file_name = link.replace(OIL_DATA_LOCATION,'')
+            with open(f'oil_data/{file_name}', 'wb') as file:
+                response = requests.get(link)
+                file.write(response.content)
+    print ('Files Downloaded Successfully')
 
 if __name__ == '__main__':
     while True:
