@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 import time
 import os
-#import openpyxl
 
 def find_oil_data():
     URL= 'https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-estatisticos'
@@ -29,12 +28,13 @@ def find_oil_data():
             os.system(f'unzip -o oil_data/{file_name} -d oil_data/{file_name[0:-4]}')
             os.system(f'rm oil_data/{file_name}')
 
-    print ('Files Downloaded Successfully')
+    print('Folders Created Successfully')
 
+#This was used to automatize the proccess but it could be made through cron, a task manager for linux, so we could schedule the script to rerun.
+#In my opinion it would be a more sofisticate resolution but I made it this way to be shown in code.
 if __name__ == '__main__':
     while True:
         find_oil_data()
-        #Program will rerun after 10h
-        waiting_time_sec = 10
-        waiting_time_min = waiting_time_sec * 60
-        time.sleep(waiting_time_min * 60)
+        #Program will rerun after 30s
+        waiting_time_seconds = 30
+        time.sleep(waiting_time_seconds)
