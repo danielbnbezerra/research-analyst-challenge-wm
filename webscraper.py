@@ -1,10 +1,12 @@
 from bs4 import BeautifulSoup
 import requests
 import time
+import os
+#import openpyxl
 
 def find_oil_data():
     URL= 'https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-estatisticos'
-    OIL_DATA_LOCATION = "https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-estatisticos/de/ppgn/pp/"
+    OIL_DATA_LOCATION = 'https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-estatisticos/de/ppgn/pp/'
     
     html_text = requests.get(URL).text
 
@@ -21,9 +23,12 @@ def find_oil_data():
         file_name = link
         if OIL_DATA_LOCATION in file_name:
             file_name = link.replace(OIL_DATA_LOCATION,'')
-            with open(f'oil_data/{file_name}', 'wb') as file:
+            with open(f'oil_data/{file_name}', 'wb') as f:
                 response = requests.get(link)
-                file.write(response.content)
+                f.write(response.content)
+            os.system(f'unzip -o oil_data/{file_name} -d oil_data/{file_name[0:-4]}')
+            os.system(f'rm oil_data/{file_name}')
+
     print ('Files Downloaded Successfully')
 
 if __name__ == '__main__':
