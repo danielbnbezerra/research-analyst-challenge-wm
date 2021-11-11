@@ -36,5 +36,5 @@ if __name__ == '__main__':
     while True:
         find_oil_data()
         #Program will rerun after 30s
-        waiting_time_seconds = 30
-        time.sleep(waiting_time_seconds)
+        waiting_time_hour = 1 * 60 * 60
+        time.sleep(waiting_time_hour)
